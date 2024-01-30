@@ -1,1 +1,6 @@
-print("Hello Worldd")
+val = 1
+print(val)
+val = val + 1
+print(val)
+val = val + 1
+print(val)
