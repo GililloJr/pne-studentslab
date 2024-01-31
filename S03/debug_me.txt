@@ -1,0 +1,3 @@
+The error in the code is that the possibility of t1 becoming 0 in the operation of 't3 = 2 * (t0 / t1)' it is not taken into account and this comes
+from the fact that the function 'g(a, b)' in 't0 = a + b - g(a, 0)' is defined by g(a, 0). To fix it we should avoid dividing by zero adding the exception
+ZeroDivisionError whenever t1 = 0. The error is founf in result 2
