@@ -1,14 +1,16 @@
 from pathlib import Path
-def base_number(genes):
-    for gene in genes:
-        filename = "../sequences/" + gene + ".txt"
-        file_contents = Path(filename).read_text()
+from Seq0 import number_of_b
 
-        counts = {'A': 0, 'C': 0, 'T': 0, 'G': 0}
-        for base in file_contents:
-            if base in counts:
-                counts[base] += 1
+genes = ["U5", "ADA", "FRAT1", "FXN"]
+bases = ["A", "C", "G", "T"]
 
-        print("Gene", gene, ":")
-        for base, count in counts.items():
-            print(base, ":", count)
+for gene in genes:
+    filename = f"../sequences/{gene}.txt"  # Using f-string for string formatting
+    file_contents = Path(filename).read_text()
+    dna_code = file_contents.strip()  # Removes leading/trailing whitespaces and newlines
+    print(f"\nGene {gene}:")
+    for base in bases:
+        count = number_of_bases(dna_code, base)
+        print(f" {base}: {count}")
+
+

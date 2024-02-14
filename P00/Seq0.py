@@ -12,48 +12,48 @@ def seq_read_fasta(filename):
 
 #exercise3
 def seq_len(seq):
-    return(len(seq))
+    return len(seq)
 
 #execise 4
-from pathlib import Path
-def analyze_gene_sequences(genes):
-    for gene in genes:
-        filename = "../sequences/" + gene + ".txt"
-        file_contents = Path(filename).read_text()
+def seq_count_base(seq, base):
+    count = seq.count(base)
+    return count
 
-        counts = {'A': 0, 'C': 0, 'T': 0, 'G': 0}
-        for base in file_contents:
-            if base in counts:
-                counts[base] += 1
-
-        print(f"Gene {gene}:")
-        for base, count in counts.items():
-            print(f"  {base}: {count}")
-
-
-# Test the function
-if __name__ == "__main__":
-    genes = ["U5", "ADA", "FRAT1", "FXN"]
-    analyze_gene_sequences(genes)
-
-
-#exercise 5
+#execise 5
 def seq_count(genes):
-    gene_counts = {}
-    for gene in genes:
-        filename = f"../sequences/{gene}.txt"
-        sequence = open(filename).read().strip()
-        counts = {'A': 0, 'C': 0, 'T': 0, 'G': 0}
-        for base in sequence:
-            if base in counts:
-                counts[base] += 1
-        gene_counts[gene] = counts
-    return gene_counts
+    bases = {"A": 0, "C": 0, "G": 0, "T": 0}
+    for row in genes:
+        for b in row:
+            if b in bases:
+                bases[b] += 1
 
-    genes = ["U5", "ADA", "FRAT1", "FXN"]
-    result = seq_count(genes)
-    for gene, counts in result.items():
-        print(f"Gene {gene}: {counts}")
+    print(bases)
+
+#exercise 6
+def seq_reverse(seq, n):
+    print("Fragment:", seq[0:n])
+    print("Reverse:", seq[:n][::-1])
+
+#exercise 7
+def seq_complement(seq):
+    complement_dict = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
+    complement_seq = ''.join(complement_dict[base] for base in seq)
+    return complement_seq
+
+#exercise 8
+def most_frequent_base(count_bases, most_frequent_base):
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
