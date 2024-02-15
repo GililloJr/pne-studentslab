@@ -8,7 +8,6 @@ class Seq:
                 return
 
         self.strbases = strbases
-        print("New sequence created!")
 
     def __str__(self):
         return self.strbases
