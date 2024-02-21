@@ -1,15 +1,4 @@
-class Seq:
-    def __init__(self, strbases=None):
-        if strbases is None:
-            self.strbases = "NULL"
-            print("NULL sequence created")
-            return
-        self.strbases = strbases
-        print("New sequence created!")
-
-    def __str__(self):
-        return self.strbases
-
+from Seq1 import Seq
 
 def null_seqs():
     s1 = Seq()

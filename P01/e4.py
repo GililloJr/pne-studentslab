@@ -1,24 +1,4 @@
-class Seq:
-    def __init__(self, strbases=None):
-        if strbases is None:
-            self.strbases = "NULL"
-            print("NULL sequence created")
-        elif all(base in "ATCG" for base in strbases):
-            self.strbases = strbases
-            print("New sequence created!")
-        else:
-            self.strbases = "ERROR"
-            print("INVALID sequence!")
-
-    def __str__(self):
-        return self.strbases
-
-    def __len__(self):
-        if self.strbases == "NULL" or self.strbases == "ERROR":
-            return 0
-        else:
-            return len(self.strbases)
-
+from Seq1 import Seq
 
 def length_of_sequences():
     s1 = Seq()
