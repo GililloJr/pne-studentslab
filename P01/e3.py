@@ -1,12 +1,21 @@
-from Seq1 import Seq
+class Seq:
+    def __init__(self, seq=None):
+        self.seq = seq
 
-def types_of_sequences():
+def sequencesss():
+
     s1 = Seq()
-    s2 = Seq("ACTGA")
-    s3 = Seq("Invalid sequence")
-    
-    print("Sequence 1:", s1)
-    print("Sequence 2:", s2)
-    print("Sequence 3:", s3)
+    print("NULL sequence created")
 
-types_of_sequences()
+    s2 = Seq("ACTGA")
+    print("New sequence created!")
+
+    s3 = Seq("Invalid sequence")
+    print("INVALID sequence!")
+
+    print(f"Sequence 1: {s1.seq if s1.seq else 'NULL'}")
+    print(f"Sequence 2: {s2.seq}")
+    print(f"Sequence 3: {'ERROR' if s3.seq and not all(char in 'ACTG' for char in s3.seq) else s3.seq}")
+
+print(sequencesss())
+

@@ -1,10 +1,17 @@
-from Seq1 import Seq
+class Sequence:
+    def __init__(self, seq):
+        self.seq = seq
 
-def null_seqs():
-    s1 = Seq()
-    s2 = Seq("TATAC")
+def type_of_sequences():
 
-    print("Sequence 1:", s1)
-    print("Sequence 2:", s2)
+    null_sequence = Sequence("NULL")
+    print("NULL sequence created")
 
-null_seqs()
+    valid_sequence = Sequence("TATAC")
+    print("New sequence created!")
+
+    print(f"Sequence 1: {null_sequence.seq}")
+    print(f"Sequence 2: {valid_sequence.seq}")
+
+print(type_of_sequences())
+
