@@ -1,24 +1,24 @@
 from Seq1 import Seq
 
-def main():
+sequences = [None, "ACTGA", "ERROR"]
 
-    sequence_list = [Seq(None), Seq("ACTGA"), Seq("ERROR")]
-
-    if Seq(None):
+for i, seq in enumerate(sequences):
+    if seq is None:
         print("NULL sequence created")
-
-    elif Seq("ACTGA"):
-        print("New sequence created!")
-
-    elif Seq(12345):
+        seq_instance = Seq("")
+    elif seq == "ERROR":
         print("INVALID sequence!")
+        seq_instance = Seq(seq)
+    else:
+        print("New sequence created!")
+        seq_instance = Seq(seq)
 
+for i, seq in enumerate(sequences):
+    seq_instance = Seq(seq)
+    print(f"Sequence {i}: (Length: {len(seq_instance.sequence)}) {'NULL' if not seq_instance.sequence else seq_instance.sequence}")
+    counts = seq_instance.count()
+    print("  Bases:", counts)
+    print("  Rev:  ", seq_instance.reverse())
 
-    for i, seq in enumerate(sequence_list):
-        print(f"Sequence {i}: (Length: {len(seq.seq)}) {seq.seq}")
-        print("  Bases:", seq.count_bases())
-        print("  Rev:  ", seq.reverse())
-
-main()
 
 

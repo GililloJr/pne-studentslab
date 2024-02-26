@@ -41,7 +41,7 @@ def seq_complement(seq):
     return complement_seq
 
 #exercise 8
-def most_frequent_base(count_bases, most_frequent_base):
+
 
 
 

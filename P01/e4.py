@@ -1,15 +1,7 @@
-class Seq:
-    def __init__(self, seq=None):
-        self.seq = seq
+from Seq1 import Seq
 
-    def __len__(self):
-        if self.seq is None or not isinstance(self.seq, str) or not all(char in 'ACTG' for char in self.seq):
-            return 0
-        return len(self.seq)
-
-def main():
-
-    s1 = Seq()
+def method_len():
+    s1 = Seq("")
     print("NULL sequence created")
 
     s2 = Seq("ACTGA")
@@ -18,9 +10,10 @@ def main():
     s3 = Seq("Invalid sequence")
     print("INVALID sequence!")
 
-    print(f"Sequence 1: (Length: {len(s1)}) {s1.seq if s1.seq else 'NULL'}")
-    print(f"Sequence 2: (Length: {len(s2)}) {s2.seq}")
-    print(f"Sequence 3: (Length: {len(s3)}) {'ERROR' if s3.seq and not all(char in 'ACTG' for char in s3.seq) else s3.seq}")
+    print(f"Sequence 1: (Length: {len(s1.sequence)}) {'NULL' if not s1.sequence else s1.sequence}")
+    print(f"Sequence 2: (Length: {len(s2.sequence)}) {'NULL' if not s2.sequence else s2.sequence}")
+    print(f"Sequence 3: (Length: {len(s3.sequence)}) {'ERROR' if s3.sequence and not all(char in 'ACTG' for char in s3.sequence) else s3.sequence}")
 
-print(main())
+print(method_len())
+
 

@@ -24,8 +24,4 @@ class Seq:
         complement_dict = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
         return ''.join(complement_dict.get(base, base) for base in self.sequence)
 
-    def read_fasta(self, filename):
-        with open(filename, 'r') as file:
-            lines = file.readlines()
-            sequence_lines = [line.strip() for line in lines[1:]]
-            self.sequence = ''.join(sequence_lines)
+

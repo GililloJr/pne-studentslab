@@ -1,6 +1,5 @@
-from pathlib import Path
-from Seq0 import count_bases, most_frequent_base
 
+from Seq0 import *
 def main():
     genes = ["U5", "ADA", "FRAT1", "FXN"]
     for gene in genes:

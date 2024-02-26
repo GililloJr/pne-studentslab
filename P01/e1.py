@@ -11,3 +11,6 @@ def sequence_length():
 print(sequence_length())
 
 
+class Seq:
+    def __init__(self, sequence):
+        self.sequence = sequence if sequence else ""
