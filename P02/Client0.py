@@ -9,7 +9,7 @@ class Client:
     def ping(self):
         print("OK!")
 
-    def talk(self, msg,):
+    def talk(self, msg):
         import socket
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((self.ip, self.port))
