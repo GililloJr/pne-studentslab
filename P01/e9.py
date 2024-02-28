@@ -1,13 +1,16 @@
 from Seq1 import Seq
 
-def main():
-    s = Seq()
-    print("NULL Seq created")
-    s.read_fasta("U5.txt")
-    print(f"Sequence : (Length: {len(s.sequence)}) {s.sequence}")
-    print("  Bases:", s.count())
-    print("  Rev:", s.reverse())
-    print("  Comp:", s.complement())
+s = Seq()
 
-main()
+filename = f"../sequences/.txt"
+s.read_fasta(filename)
+
+print("NULL Seq created")
+print("Sequence : (Length: {}) {}".format(len(s.sequence), s.sequence))
+print("  Bases:", s.bases)
+print("  Rev:  ", s.sequence[::-1])
+complement_dict = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
+complement_seq = ''.join(complement_dict.get(base, base) for base in s.sequence)
+print("  Comp: ", complement_seq)
+
 

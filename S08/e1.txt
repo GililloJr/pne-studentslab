@@ -1,0 +1,2 @@
+mobile, wifi, date: 27/02/2024, place: Fuenlabrada lab, IP: 10.1.137.235
+lab computer, wire, date: 27/02/2024, place: Fuenlabrada lab, IP: 212.128.255.96

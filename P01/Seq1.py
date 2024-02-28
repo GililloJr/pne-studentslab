@@ -1,6 +1,7 @@
 class Seq:
-    def __init__(self, sequence):
-        self.sequence = sequence if sequence else ""
+    def __init__(self, sequence=""):
+        self.sequence = sequence
+        self.bases = {'A': 0, 'T': 0, 'C': 0, 'G': 0}
 
     def count_base(self, base):
         if not self.sequence or any(char not in 'ACTG' for char in self.sequence):
@@ -26,6 +27,9 @@ class Seq:
 
     def read_fasta(self, filename):
         with open(filename, 'r') as file:
-            lines = file.readlines()
-            sequence_lines = [line.strip() for line in lines[1:]]
-            self.sequence = ''.join(sequence_lines)
+            for line in file:
+                if not line.startswith('>'):
+                    self.sequence += line.strip()
+                    for base in line.strip():
+                        if base in self.bases:
+                            self.bases[base] += 1
