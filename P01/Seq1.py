@@ -27,9 +27,6 @@ class Seq:
 
     def read_fasta(self, filename):
         with open(filename, 'r') as file:
-            for line in file:
-                if not line.startswith('>'):
-                    self.sequence += line.strip()
-                    for base in line.strip():
-                        if base in self.bases:
-                            self.bases[base] += 1
+            lines = file.readlines()
+            self.sequence = "".join(lines[1:])
+        return self.sequence
