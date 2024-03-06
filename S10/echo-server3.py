@@ -2,7 +2,7 @@ import socket
 
 # Configure the Server's IP and PORT
 PORT = 8081
-IP = "212.128.255.96" # this IP address is local, so only requests from the same machine are possible
+IP = "212.128.255.104" # this IP address is local, so only requests from the same machine are possible
 number_con = 0
 # -- Step 1: create the socket
 ls = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
