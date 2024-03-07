@@ -40,3 +40,14 @@ except KeyboardInterrupt:
         print(j)
 # -- Close the socket
 ls.close()
+
+
+
+
+def return_response(self, msg):
+    if msg.startswith("PING"):
+        print("PING")
+        return self.ping_response()
+    if msg.startswith("GET"):
+        print("GET")
+        return self.ping_response(self)
