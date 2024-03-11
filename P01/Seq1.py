@@ -1,7 +1,15 @@
 class Seq:
     def __init__(self, sequence=""):
         self.sequence = sequence
-        self.bases = {'A': 0, 'T': 0, 'C': 0, 'G': 0}
+        self.strbases = {'A': 0, 'T': 0, 'C': 0, 'G': 0}
+
+    def __str__(self):
+        return self.sequence
+
+    def len(self):
+        if self.strbases == "NULL" or self.strbases == "ERROR!!":
+            return 0
+        return len(self.strbases)
 
     def count_base(self, base):
         if not self.sequence or any(char not in 'ACTG' for char in self.sequence):
