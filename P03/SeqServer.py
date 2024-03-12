@@ -46,7 +46,7 @@ class SeqServer:
 
     def get_response(self, msg):
         termcolor.cprint("GET", 'green')
-        sequences = ["ATGCAGWA", "ATGGTCCG", "TGCAGTGT", "TTGACCTA"]
+        sequences = ["ATGCAGAA", "ATGGTCCG", "TGCAGTGT", "TTGACCTA"]
         for j in msg:
             if j.isdigit():
                 if 0 <= int(j) <= 3:
