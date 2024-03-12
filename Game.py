@@ -1,5 +1,23 @@
 import socket
 import random
+PORT = 8081
+IP = "127.0.0.1"
+ls = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ls.bind((IP, PORT))
+ls.listen()
+print("SEQ server is configured!")
+
+try:
+    while True:
+        print("Waiting for clients to connect")
+        (rs, address) = ls.accept()
+        msg = rs.recv(2048).decode("utf-8")
+        send_bytes = str.encode()
+        rs.send(send_bytes)
+        rs.close()
+except KeyboardInterrupt:
+    print("These clients have connected to the server:")
+
 
 class NumberGuesser:
     def __init__(self):
@@ -15,25 +33,4 @@ class NumberGuesser:
         else:
             return 'Lower'
 
-    def __init__(self):
-        self.PORT = 8081
-        self.IP = "127.0.0.1"
-        self.ls = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.ls.bind((self.IP, self.PORT))
-        self.ls.listen()
-        print("SEQ server is configured!")
-
-        try:
-            while True:
-                print("Waiting for clients to connect")
-                (rs, address) = self.ls.accept()
-                msg = rs.recv(2048).decode("utf-8")
-                response = self.response(str(msg))
-                send_bytes = str.encode(response)
-                rs.send(send_bytes)
-                rs.close()
-        except KeyboardInterrupt:
-            print("These clients have connected to the server:")
-
-        self.ls.close()
 
