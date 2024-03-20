@@ -1,6 +1,6 @@
 import socket
 import termcolor
-
+from pathlib import Path
 
 # -- Server network parameters
 IP = "127.0.0.1"
@@ -21,32 +21,23 @@ def process_client(s):
     req_line = lines[0]
 
     print("Request line: ", end="")
-    termcolor.cprint(req_line, "green")
+    termcolor.cprint(req_line, "yellow")
 
-    # -- Generate the response message
-    # It has the following lines
-    # Status line
-    # header
-    # blank line
-    # Body (content to send)
+    if req_line.startswith("GET /info/A"):
+        file_content = Path("./html/info/A.html").read_text()
+        body = file_content
+    elif req_line.startswith("GET /info/C"):
+        file_content = Path("./html/info/C.html").read_text()
+        body = file_content
+    elif req_line.startswith("GET /info/G"):
+        file_content = Path("./html/info/G.html").read_text()
+        body = file_content
+    elif req_line.startswith("GET /info/T"):
+        file_content = Path("./html/info/T.html").read_text()
+        body = file_content
+    else:
+        body = ""
 
-    # This new contents are written in HTML language
-    body = """
-    <!DOCTYPE html>
-    <html lang="en" dir="ltr">
-      <head>
-        <meta charset="utf-8">
-        <title>A:Adenine</title>
-      </head>
-      <body style="background-color: lightgreen;">
-        <h1>ADENINE</h1>
-        <p>Letter: A</p>
-        <p>Chemical formula: C5H5N5</p>
-        <a href="https://en.wikipedia.org/">Wikipedia</a>
-      </body>
-    </html>
-    """
-    # -- Status line: We respond that everything is ok (200 code)
     status_line = "HTTP/1.1 200 OK\n"
 
     # -- Add the Content-Type header
@@ -59,10 +50,6 @@ def process_client(s):
     response_msg = status_line + header + "\n" + body
     cs.send(response_msg.encode())
 
-
-# -------------- MAIN PROGRAM
-# ------ Configure the server
-# -- Listening socket
 ls = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # -- Optional: This is for avoiding the problem of Port already in use
