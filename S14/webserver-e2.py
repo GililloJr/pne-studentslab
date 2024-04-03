@@ -1,7 +1,7 @@
 import http.server
 import socketserver
 import termcolor
-
+from pathlib import Path
 # Define the Server's port
 PORT = 8080
 
@@ -20,13 +20,21 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         # Print the request line
         termcolor.cprint(self.requestline, 'green')
 
+        path = self.path
         # IN this simple server version:
         # We are NOT processing the client's request
         # It is a happy server: It always returns a message saying
         # that everything is ok
-
         # Message to send back to the client
-        contents = "Welcome to my server"
+        url = self.requestline.split(" ")[1]
+        if url == "/index.html":
+            contents = Path("../S14/index.html").read_text()
+        elif url == "/pink.html":
+            contents = Path("../S14/pink.html").read_text()
+        elif url == "/green.html":
+            contents = Path("../S14/green.html").read_text()
+        elif url == "/blue.html":
+            contents = Path("../S14/blue.html").read_text()
 
 
 
