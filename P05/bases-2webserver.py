@@ -25,13 +25,13 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         # It is a happy server: It always returns a message saying
         # that everything is ok
         url = self.requestline.split(" ")[1]
-        if url == "/":
+        if url == "/" or url == "index.html":
             contents = Path("./html/info/index.html").read_text()
         else:
             try:
-                contents = Path("./" + url).read_text()
+                contents = Path("./html" + url).read_text()
             except FileNotFoundError:
-                contents = Path("./Error.html").read_text()
+                contents = Path("./html/info/error.html").read_text()
 
 
         # Generating the response message
