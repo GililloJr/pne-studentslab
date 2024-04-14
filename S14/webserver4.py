@@ -26,9 +26,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         # that everything is ok
 
         # Message to send back to the client
-        contents = "Welcome to my server"
-
-
+        contents = "I am the happy server! :-)"
 
         # Generating the response message
         self.send_response(200)  # -- Status line: OK!
