@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>FORM 2</title>
   </head>
-  <body>
-    <h3>Example of different input elements</h3>
-
-    <form action="myserver" method="get">
-      Text input  <input type="text" name="msg">
-      <br><br>
+  <body style="background-color: yellow;">
+     <h1>Echo Server</h1>
+    <form action="echo" method="get">
+    Message: <br>
+    <input type="text" name="msg"><br>
       Echo in capital letters:
-      <input type="checkbox" name="chk">
-        <input type="submit"/>
+    <input type="checkbox" name="chk">
+      <br><br>
+    <input type="submit" value="SEND"/>
     </form>
-
   </body>
 </html>
