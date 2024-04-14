@@ -1,7 +1,7 @@
 import http.server
 import socketserver
 import termcolor
-
+from pathlib import Path
 # Define the Server's port
 PORT = 8080
 
@@ -24,17 +24,21 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         # We are NOT processing the client's request
         # It is a happy server: It always returns a message saying
         # that everything is ok
-
-        # Message to send back to the client
-        contents = "Welcome to my server"
-
+        url = self.requestline.split(" ")[1]
+        if url == "/" or url == "index.html":
+            contents = Path("./html/info/index.html").read_text()
+        else:
+            try:
+                contents = Path("./html" + url).read_text()
+            except FileNotFoundError:
+                contents = Path("./html/info/error.html").read_text()
 
 
         # Generating the response message
         self.send_response(200)  # -- Status line: OK!
 
         # Define the content-type header:
-        self.send_header('Content-Type', 'text/plain')
+        self.send_header('Content-Type', 'text/html')
         self.send_header('Content-Length', len(contents.encode()))
 
         # The header is finished
@@ -63,5 +67,5 @@ with socketserver.TCPServer(("", PORT), Handler) as httpd:
         httpd.serve_forever()
     except KeyboardInterrupt:
         print("")
-        print("Stopped by the user")
+        print("Stoped by the user")
         httpd.server_close()
