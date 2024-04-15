@@ -15,6 +15,18 @@ def read_html_file(filename):
     contents = j.Template(contents)
     return contents
 
+
+# Crear el diccionario
+sequences_adn = {
+    0: "ATCGATCGATCGATCGA",
+    1: "TGCATCGATCGATCGAT",
+    2: "CGTAGCATCGATCGATC",
+    3: "TAGCTAGCTAGCTAGCT",
+    4: "GATCGATCGATCGATCG"
+}
+
+
+# Imprimir el diccionario
 # Class with our Handler. It is a called derived from BaseHTTPRequestHandler
 # It means that our class inherits all his methods and properties
 class TestHandler(http.server.BaseHTTPRequestHandler):
@@ -29,10 +41,20 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         # Print the request line
         termcolor.cprint(self.requestline, 'green')
 
+
         if path == "/":
-            contents = Path("./html/form-1.html").read_text()
-        elif path == "/echo":
-            contents = read_html_file("form-e1.html").render(context={"todisplay": arguments["msg"][0]})
+            filename = "index.html"
+            contents = read_html_file(filename).render(context={})
+        elif path == "/ping":
+            filename = "ping.html"
+            contents = read_html_file(filename).render(context={})
+        elif path == "/get":
+            filename = "get.html"
+            if "n" in arguments:
+                n = arguments["n"][-1]
+                seq = sequences_adn.get(int(n))
+                if seq is not None:
+                    contents = read_html_file(filename).render(context={"todisplay": seq, "seq": n})
         else:
             contents = Path('html/error.html').read_text()
 
