@@ -68,8 +68,28 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                         seq_fin += i
             contents = read_html_file("gene.html").render(context={"todisplay": arguments["base"][0], "sequence": seq_fin})
         elif path == "/operation":
+            filename = "operation.html"
+            if "seq" in arguments and "operation" in arguments:
+                seq = arguments["seq"][-1]
+                operation = arguments["operation"][-1]
 
-        #else:
+                if operation == "1":  # Operation 1: obtaining information about a sequence
+                    # Implement logic to obtain information about the sequence
+                    result = f"Information about sequence {seq}"
+                elif operation == "2":  # Operation 2: calculating its complement
+                    # Implement logic to calculate complement of the sequence
+                    result = f"Complement of sequence {seq}"
+                elif operation == "3":  # Operation 3: calculating its reverse
+                    # Implement logic to calculate reverse of the sequence
+                    result = f"Reverse of sequence {seq}"
+                else:
+                    result = "Invalid operation"
+
+                contents = read_html_file(filename).render(context={"result": result})
+            else:
+                contents = read_html_file("error.html").render(context={"error": "Invalid parameters"})
+
+        else:
             contents = Path('html/error.html').read_text()
 
 
