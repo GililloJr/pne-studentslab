@@ -58,13 +58,15 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         elif path == "/gene":
             genes = ["U5", "ADA", "FXN", "FRAT1", "RNU6_269P"]
             seq_fin = ""
-            for gene in genes:
-                filename = "../sequences/" + gene + ".txt"
-                sequence = Path(filename).read_text()
-                s = sequence.split("\n")[1:]
-                for i in s:
-                    seq_fin += i
-                contents = read_html_file("gene.html").render(context={"todisplay": arguments["base"][0], "sequence": seq_fin})
+            gene = arguments.get("base")[0]
+            for i in range(0, 5):
+                if gene == genes[i]:
+                    filename = "../sequences/" + gene + ".txt"
+                    sequence = Path(filename).read_text()
+                    s = sequence.split("\n")[1:]
+                    for i in s:
+                        seq_fin += i
+            contents = read_html_file("gene.html").render(context={"todisplay": arguments["base"][0], "sequence": seq_fin})
         else:
             contents = Path('html/error.html').read_text()
 
