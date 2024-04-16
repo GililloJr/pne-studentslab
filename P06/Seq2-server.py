@@ -56,12 +56,15 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 if seq is not None:
                     contents = read_html_file(filename).render(context={"todisplay": seq, "seq": n})
         elif path == "/gene":
-            filename = "gene.html"
-            if "id" in arguments:
-                gene_id = arguments["id"][-1]
-                gene_seq = sequences_adn.get(int(gene_id))
-                if gene_seq is not None:
-                    contents = read_html_file(filename).render(context={"gene_seq": gene_seq})
+            genes = ["U5", "ADA", "FXN", "FRAT1", "RNU6_269P"]
+            seq_fin = ""
+            for gene in genes:
+                filename = "../sequences/" + gene + ".txt"
+                sequence = Path(filename).read_text()
+                s = sequence.split("\n")[1:]
+                for i in s:
+                    seq_fin += i
+                contents = read_html_file("gene.html").render(context={"todisplay": arguments["base"][0], "sequence": seq_fin})
         else:
             contents = Path('html/error.html').read_text()
 
