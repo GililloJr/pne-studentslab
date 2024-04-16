@@ -67,6 +67,8 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                     for i in s:
                         seq_fin += i
             contents = read_html_file("gene.html").render(context={"todisplay": arguments["base"][0], "sequence": seq_fin})
+        elif path == "/operation":
+
         else:
             contents = Path('html/error.html').read_text()
 
