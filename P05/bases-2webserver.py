@@ -2,6 +2,7 @@ import http.server
 import socketserver
 import termcolor
 from pathlib import Path
+from urllib.parse import urlparse
 # Define the Server's port
 PORT = 8080
 
@@ -25,14 +26,17 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         # It is a happy server: It always returns a message saying
         # that everything is ok
         url = self.requestline.split(" ")[1]
-        if url == "/" or url == "index.html":
-            contents = Path("./html/info/index.html").read_text()
+
+        # Inside the do_GET method
+        parsed_url = urlparse(url)
+        path = parsed_url.path
+        if path == "/" or path == "/index.html":
+            contents = Path("./html/index.html").read_text()
         else:
             try:
-                contents = Path("./html" + url).read_text()
+                contents = Path("./html" + path).read_text()
             except FileNotFoundError:
                 contents = Path("./html/info/error.html").read_text()
-
 
         # Generating the response message
         self.send_response(200)  # -- Status line: OK!

@@ -1,6 +1,5 @@
 import http.server
 import socketserver
-import termcolor
 from pathlib import Path
 # Define the Server's port
 PORT = 8080
@@ -18,7 +17,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         in the HTTP protocol request"""
 
         # Print the request line
-        termcolor.cprint(self.requestline, 'green')
+        print(self.requestline, 'green')
 
         # IN this simple server version:
         # We are NOT processing the client's request

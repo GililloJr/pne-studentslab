@@ -30,12 +30,9 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         termcolor.cprint(self.requestline, 'green')
 
         if path == "/":
-            contents = Path("./html/form-2.html").read_text()
+            contents = Path("./html/form-1.html").read_text()
         elif path == "/echo":
-            if len(arguments) == 2:
-                contents = read_html_file("form-e2.html").render(context={"todisplay": arguments["msg"][0].upper()})
-            else:
-                contents = read_html_file("form-e2.html").render(context={"todisplay": arguments["msg"][0]})
+            contents = read_html_file("form-e1.html").render(context={"todisplay": arguments["msg"][0]})
         else:
             contents = Path('html/error.html').read_text()
 
