@@ -4,6 +4,7 @@ import termcolor
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 import jinja2 as j
+from Seq1 import Seq
 # Define the Server's port
 PORT = 8080
 
@@ -16,7 +17,20 @@ def read_html_file(filename):
     return contents
 
 
-# Crear el diccionario
+def info_response(msg):
+    termcolor.cprint("INFO", 'green')
+    seq = Seq(msg.replace("INFO", "").strip())
+    info = f"Sequence: {seq}\n"
+    info += f"Total length: {seq.len()}\n"
+    for base in ["A", "C", "G", "T"]:
+        count = seq.count_base(base)
+        if seq.len() > 0:
+            percentage = count / seq.len() * 100
+        else:
+            percentage = 0
+        info += f"{base}: {count} ({percentage}%)\n"
+
+#Crear el diccionario
 sequences_adn = {
     0: "ATCGATCGATCGATCGA",
     1: "TGCATCGATCGATCGAT",
@@ -45,9 +59,11 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         if path == "/":
             filename = "index.html"
             contents = read_html_file(filename).render(context={})
+
         elif path == "/ping":
             filename = "ping.html"
             contents = read_html_file(filename).render(context={})
+
         elif path == "/get":
             filename = "get.html"
             if "n" in arguments:
@@ -55,6 +71,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 seq = sequences_adn.get(int(n))
                 if seq is not None:
                     contents = read_html_file(filename).render(context={"todisplay": seq, "seq": n})
+
         elif path == "/gene":
             genes = ["U5", "ADA", "FXN", "FRAT1", "RNU6_269P"]
             seq_fin = ""
@@ -67,27 +84,21 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                     for i in s:
                         seq_fin += i
             contents = read_html_file("gene.html").render(context={"todisplay": arguments["base"][0], "sequence": seq_fin})
+
         elif path == "/operation":
+            seq = Seq(arguments["sequence"][0])
+            percent = arguments["operation"][0]
             filename = "operation.html"
-            if "seq" in arguments and "operation" in arguments:
-                seq = arguments["seq"][-1]
-                operation = arguments["operation"][-1]
+            if percent == "rev":
+                msg = seq.reverse()
+                contents = read_html_file(filename).render(context={"result": seq, "todisplay2": percent, "todisplay3": msg})
+            elif percent == "comp":
+                msg = seq.complement()
+                contents = read_html_file(filename).render(context={"result": seq, "todisplay2": percent, "todisplay3": msg})
+            elif percent == "Info":
+                msg = info_response(seq)
+                contents = read_html_file(filename).render(context={"result": seq, "todisplay2": percent, "todisplay3": msg})
 
-                if operation == "1":  # Operation 1: obtaining information about a sequence
-                    # Implement logic to obtain information about the sequence
-                    result = f"Information about sequence {seq}"
-                elif operation == "2":  # Operation 2: calculating its complement
-                    # Implement logic to calculate complement of the sequence
-                    result = f"Complement of sequence {seq}"
-                elif operation == "3":  # Operation 3: calculating its reverse
-                    # Implement logic to calculate reverse of the sequence
-                    result = f"Reverse of sequence {seq}"
-                else:
-                    result = "Invalid operation"
-
-                contents = read_html_file(filename).render(context={"result": result})
-            else:
-                contents = read_html_file("error.html").render(context={"error": "Invalid parameters"})
 
         else:
             contents = Path('html/error.html').read_text()
