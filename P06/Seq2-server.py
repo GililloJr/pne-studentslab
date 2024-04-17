@@ -17,18 +17,17 @@ def read_html_file(filename):
     return contents
 
 
-def info_response(msg):
-    termcolor.cprint("INFO", 'green')
-    seq = Seq(msg.replace("INFO", "").strip())
-    info = f"Sequence: {seq}\n"
-    info += f"Total length: {seq.len()}\n"
+def info_response(seq):
+    info = f"Total length: {seq.len()}<br>"
     for base in ["A", "C", "G", "T"]:
         count = seq.count_base(base)
         if seq.len() > 0:
             percentage = count / seq.len() * 100
         else:
             percentage = 0
-        info += f"{base}: {count} ({percentage}%)\n"
+        info += f"{base}: {count} ({percentage}%)<br>"
+    return info
+
 
 #Crear el diccionario
 sequences_adn = {
@@ -89,21 +88,19 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             seq = Seq(arguments["sequence"][0])
             percent = arguments["operation"][0]
             filename = "operation.html"
-            if percent == "rev":
+            if percent == "Rev":
                 msg = seq.reverse()
-                contents = read_html_file(filename).render(context={"result": seq, "todisplay2": percent, "todisplay3": msg})
-            elif percent == "comp":
+                contents = read_html_file(filename).render(context={"todisplay": seq, "todisplay2": percent, "todisplay3": msg})
+            elif percent == "Comp":
                 msg = seq.complement()
-                contents = read_html_file(filename).render(context={"result": seq, "todisplay2": percent, "todisplay3": msg})
+                contents = read_html_file(filename).render(context={"todisplay": seq, "todisplay2": percent, "todisplay3": msg})
             elif percent == "Info":
                 msg = info_response(seq)
-                contents = read_html_file(filename).render(context={"result": seq, "todisplay2": percent, "todisplay3": msg})
-
-
+                contents = read_html_file(filename).render(context={"todisplay": seq, "todisplay2": percent, "todisplay3": msg})
         else:
             contents = Path('html/error.html').read_text()
 
-
+        print(arguments)
         # Generating the response message
         self.send_response(200)  # -- Status line: OK!
 
