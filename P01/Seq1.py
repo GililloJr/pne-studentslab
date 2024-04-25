@@ -9,8 +9,6 @@ class Seq:
     def len(self):
         if self.sequence == "NULL" or self.sequence == "ERROR!!":
             return 0
-        print("STRBASES:=======>", self.strbases)
-        print("SEQUENCES:=======>", self.sequence)
         return len(self.sequence)
 
     def count_base(self, base):
