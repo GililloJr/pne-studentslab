@@ -7,9 +7,11 @@ class Seq:
         return self.sequence
 
     def len(self):
-        if self.strbases == "NULL" or self.strbases == "ERROR!!":
+        if self.sequence == "NULL" or self.sequence == "ERROR!!":
             return 0
-        return len(self.strbases)
+        print("STRBASES:=======>", self.strbases)
+        print("SEQUENCES:=======>", self.sequence)
+        return len(self.sequence)
 
     def count_base(self, base):
         if not self.sequence or any(char not in 'ACTG' for char in self.sequence):
