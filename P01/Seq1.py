@@ -38,3 +38,14 @@ class Seq:
             lines = file.readlines()
             self.sequence = "".join(lines[1:])
         return self.sequence
+
+    def count_percent(self):
+        total_len = self.len()
+        if total_len == 0:
+            return {'A': 0, 'T': 0, 'C': 0, 'G': 0}
+        else:
+            return {base: (self.count_base(base) / total_len) * 100 for base in 'ACTG'}
+
+    def frequent_base(self):
+        counts = self.count()
+        return max(counts, key=counts.get)
