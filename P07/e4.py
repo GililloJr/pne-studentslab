@@ -3,52 +3,57 @@ import json
 from Seq1 import Seq
 from pathlib import Path
 
-genes = ["U5", "ADA", "FXN", "FRAT1", "RNU6_269P"]
-def get_gene_data(gene_id):
-    PORT = 80
-    SERVER = 'rest.ensembl.org'
-    ENDPOINT = '/sequence/id'
-    PARAMS = '?content-type=application/json'
-    URL = SERVER + ENDPOINT + '/' + gene_id + PARAMS
 
-    print(f"Server: {SERVER}")
-    print(f"URL: {URL}")
+PORT = 80
+SERVER = 'rest.ensembl.org'
+ENDPOINT = '/sequence/id'
+PARAMS = '?content-type=application/json'
+GENE_ID = 'ENSG00000207552'
+URL = SERVER + ENDPOINT + PARAMS
 
-    print(f"\nConnecting to server: {SERVER}:{PORT}\n")
+print(f"Server: {SERVER}")
+print(f"URL: {URL}")
 
-    conn = http.client.HTTPConnection(SERVER, PORT)
-    try:
-        conn.request("GET", ENDPOINT + '/' + gene_id + PARAMS)
-    except ConnectionRefusedError:
-        print("ERROR! Cannot connect to the Server")
-        exit()
+print(f"\nConnecting to server: {SERVER}:{PORT}\n")
 
-    r1 = conn.getresponse()
-    data = r1.read().decode("utf-8")
-    response = json.loads(data)
+conn = http.client.HTTPConnection(SERVER, PORT)
+try:
+    conn.request("GET", ENDPOINT + PARAMS)
+except ConnectionRefusedError:
+    print("ERROR! Cannot connect to the Server")
+    exit()
 
-    if 'seq' in response and 'desc' in response:
-        sequence = Seq(response['seq'])
-        description = response['desc']
-        return sequence, description
-    else:
-        print(f"Gene {gene_id} not found or no sequence/description available.")
-        return None, None
+genes = {
+    "FRAT1": "ENSG00000165879",
+    "ADA": "ENSG00000196839",
+    "FXN": "ENSG00000165060",
+    "RNU6_269P": 'ENSG00000212379',
+    "MIR633": 'ENSG00000207552',
+    "TTTY4C": 'ENSG00000228296',
+    "RBMY2YP": "ENSG00000227633",
+    "FGFR3": "ENSG00000068078",
+    "KDR": "ENSG00000128052",
+    "ANK2": "ENSG00000145362"
+}
 
-def main():
-    gene_id = input("Enter the gene ID: ")
-    sequence, description = get_gene_data(gene_id)
+r1 = conn.getresponse()
+data = r1.read().decode("utf-8")
+response = json.loads(data)
 
-    if sequence and description:
-        print(f"Gene: {gene_id}")
-        print(f"Description: {description}")
-        print(f"Total length: {sequence.len()}")
-        print(f"Bases: {sequence.strbases}")
-        for base in ['A', 'C', 'G', 'T']:
-            print(f"{base}: {sequence.count_base(base)} ({sequence.count_percent(base)}%)")
-        print(f"Most frequent Base: {sequence.frequent_base()}")
+if 'seq' in response and 'desc' in response:
+    sequence = Seq(response['seq'])
+    description = response['desc']
+    print(f"Gene: {GENE_ID}")
+    print(f"Description: {description}")
+    print(f"Bases: {sequence}")
 
-if __name__ == "__main__":
-    main()
+else:
+    print(f"Gene {GENE_ID} not found or no sequence/description available.")
+
+    print(f"Bases: {sequence.strbases}")
+    for base in ['A', 'C', 'G', 'T']:
+        print(f"{base}: {sequence.count_base(base)} ({sequence.count_percent(base)}%)")
+    print(f"Most frequent Base: {sequence.frequent_base()}")
+
 
 
