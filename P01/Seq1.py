@@ -38,7 +38,6 @@ class Seq:
             lines = file.readlines()
             self.sequence = "".join(lines[1:])
         return self.sequence
-
     def count_percent(self):
         total_len = self.len()
         if total_len == 0:
