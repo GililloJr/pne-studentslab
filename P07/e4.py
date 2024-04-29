@@ -1,27 +1,6 @@
 import http.client
 import json
 from Seq1 import Seq
-from pathlib import Path
-
-
-PORT = 80
-SERVER = 'rest.ensembl.org'
-ENDPOINT = '/sequence/id'
-PARAMS = '?content-type=application/json'
-GENE_ID = 'ENSG00000207552'
-URL = SERVER + ENDPOINT + PARAMS
-
-print(f"Server: {SERVER}")
-print(f"URL: {URL}")
-
-print(f"\nConnecting to server: {SERVER}:{PORT}\n")
-
-conn = http.client.HTTPConnection(SERVER, PORT)
-try:
-    conn.request("GET", ENDPOINT + PARAMS)
-except ConnectionRefusedError:
-    print("ERROR! Cannot connect to the Server")
-    exit()
 
 genes = {
     "FRAT1": "ENSG00000165879",
@@ -36,24 +15,53 @@ genes = {
     "ANK2": "ENSG00000145362"
 }
 
-r1 = conn.getresponse()
-data = r1.read().decode("utf-8")
-response = json.loads(data)
+def info_response(seq):
+    info = f"Total length: {seq.len()}\n"
+    for base in ["A", "C", "G", "T"]:
+        count = seq.count_base(base)
+        if seq.len() > 0:
+            percentage = count / seq.len() * 100
+        else:
+            percentage = 0
+        info += f"{base}: {count} ({percentage:.2f}%)\n"
+    return info
 
-if 'seq' in response and 'desc' in response:
-    sequence = Seq(response['seq'])
-    description = response['desc']
-    print(f"Gene: {GENE_ID}")
-    print(f"Description: {description}")
-    print(f"Bases: {sequence}")
+gene_code = input("Enter a gene name (e.g., FRAT1, ADA, FXN): ")
+if gene_code in genes:
+    SERVER = 'rest.ensembl.org'
+    ENDPOINT = f'/sequence/id/{genes[gene_code]}'
+    PARAMS = '?content-type=application/json'
+    URL = SERVER + ENDPOINT + PARAMS
 
+    print()
+    print(f"Server: {SERVER}")
+    print(f"URL: {URL}")
+
+    conn = http.client.HTTPConnection(SERVER)
+
+    try:
+        conn.request("GET", ENDPOINT + PARAMS)
+    except ConnectionError:
+        print("ERROR! Cannot connect to the server")
+        exit()
+
+    r1 = conn.getresponse()
+    print(f"Response received!: {r1.status} {r1.reason}\n")
+    data = r1.read().decode("utf-8")
+    response = json.loads(data)
+    print(f"Gene: {gene_code}")
+    print(f"Description: {response['desc']}")
+    sequence = response['seq']
+    seq = Seq(sequence)
+    print(info_response(seq))
+    base_count = sequence.count()
+    most_frequent = max(base_count, key=base_count.get)
+    print(f"Most frequent base is: {most_frequent}")
 else:
-    print(f"Gene {GENE_ID} not found or no sequence/description available.")
+    print("No valid gene.")
 
-    print(f"Bases: {sequence.strbases}")
-    for base in ['A', 'C', 'G', 'T']:
-        print(f"{base}: {sequence.count_base(base)} ({sequence.count_percent(base)}%)")
-    print(f"Most frequent Base: {sequence.frequent_base()}")
+
+
 
 
 
