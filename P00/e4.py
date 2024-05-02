@@ -1,5 +1,5 @@
 from pathlib import Path
-from Seq0 import number_of_b
+from Seq0 import seq_count_base
 
 genes = ["U5", "ADA", "FRAT1", "FXN"]
 bases = ["A", "C", "G", "T"]
@@ -10,7 +10,7 @@ for gene in genes:
     dna_code = file_contents.strip()  # Removes leading/trailing whitespaces and newlines
     print(f"\nGene {gene}:")
     for base in bases:
-        count = number_of_bases(dna_code, base)
+        count = seq_count_base(dna_code, base)
         print(f" {base}: {count}")
 
 

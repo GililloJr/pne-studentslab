@@ -41,10 +41,20 @@ def seq_complement(seq):
     return complement_seq
 
 #exercise 8
+def most_frequent_base(sequence):
+    base_counts = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
+    for base in sequence:
+        if base in base_counts:
+            base_counts[base] += 1
+    return max(base_counts, key=base_counts.get)
 
-
-
-
+def count_bases(sequences):
+    bases = {"A": 0, "C": 0, "G": 0, "T": 0}
+    for seq in sequences:
+        for b in seq:
+            if b in bases:
+                bases[b] += 1
+    return bases
 
 
 
