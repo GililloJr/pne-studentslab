@@ -13,9 +13,12 @@ for i, seq in enumerate(sequences):
         print("New sequence created!")
         seq_instance = Seq(seq)
 
-    print(f"Sequence {i}: (Length: {len(seq_instance.sequence)}) {'NULL' if not seq_instance.sequence else seq_instance.sequence}")
-    counts = seq_instance.count()
-    print("  Bases:", counts)
+    if seq_instance.sequence:
+        print(f"Sequence {i}: (Length: {len(seq_instance.sequence)}) {seq_instance.sequence}")
+        print("  Bases:", seq_instance.count())
+    else:
+        print(f"Sequence {i}: (Length: 0) NULL")
+
 
 
 
