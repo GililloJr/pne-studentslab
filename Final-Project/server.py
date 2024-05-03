@@ -55,7 +55,6 @@ def list_species(endpoint, parameters):
     request = RESOURCE_TO_ENSEMBL_REQUEST[endpoint]
     url = f"{request['resource']}?{request['params']}"
     error, data = server_request(EMSEMBL_SERVER, url)
-    print(data)
     if not error:
         limit = None
         if 'limit' in parameters:
