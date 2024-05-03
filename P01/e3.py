@@ -1,19 +1,13 @@
 from Seq1 import Seq
 
-def sequencesss():
-    s1 = Seq("")
-    print("NULL sequence created")
 
-    s2 = Seq("ACTGA")
-    print("New sequence created!")
+s1 = Seq("")
+s2 = Seq("ACTGA")
+s3 = Seq("Invalid sequence")
 
-    s3 = Seq("Invalid sequence")
-    print("INVALID sequence!")
+print(f"Sequence 1: {s1}")
+print(f"Sequence 2: {s2}")
+print(f"Sequence 3: {s3}")
 
-    print(f"Sequence 1: {s1.sequence if s1.sequence else 'NULL'}")
-    print(f"Sequence 2: {s2.sequence}")
-    print(f"Sequence 3: {'ERROR' if s3.sequence and not all(char in 'ACTG' for char in s3.sequence) else s3.sequence}")
-
-sequencesss()
 
 

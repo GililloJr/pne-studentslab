@@ -1,7 +1,18 @@
 class Seq:
     def __init__(self, sequence=""):
+        if sequence == "":
+            print("NULL sequence created")
+            self.sequence = 'NULL'
+            return
+        bases = ["A", "G", "C", "T"]
+        for j in sequence:
+            if j not in bases:
+                self.sequence = 'ERROR!!'
+                print("INVALID sequence!")
+                return
         self.sequence = sequence
-        self.strbases = {'A': 0, 'T': 0, 'C': 0, 'G': 0}
+        print("New sequence created")
+
 
     def __str__(self):
         return self.sequence
@@ -12,39 +23,43 @@ class Seq:
         return len(self.sequence)
 
     def count_base(self, base):
-        if not self.sequence or any(char not in 'ACTG' for char in self.sequence):
+        if self.sequence == "NULL" or self.sequence == "ERROR!!":
             return 0
         return self.sequence.count(base)
 
     def count(self):
-        if not self.sequence or any(char not in 'ACTG' for char in self.sequence):
-            return {'A': 0, 'T': 0, 'C': 0, 'G': 0}
-        else:
-            return {base: self.count_base(base) for base in 'ACTG'}
+        seq_count = {'A': 0, 'T': 0, 'C': 0, 'G': 0}
+        for n in self.sequence:
+            if n in seq_count:
+                if self.sequence == "NULL" or self.sequence == "ERROR!!":
+                    seq_count[n] = 0
+                else:
+                    seq_count[n] += 1
+        return seq_count
 
     def reverse(self):
-        if not self.sequence or any(char not in 'ACTG' for char in self.sequence):
-            return "NULL" if self.sequence == "NULL" else "ERROR"
+        if self.sequence == "NULL":
+            return 'NULL'
+        if self.sequence == "ERROR!!":
+            return 'ERROR'
         return self.sequence[::-1]
 
     def complement(self):
-        if not self.sequence or any(char not in 'ACTG' for char in self.sequence):
-            return "NULL" if self.sequence == "NULL" else "ERROR"
         complement_dict = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
-        return ''.join(complement_dict.get(base, base) for base in self.sequence)
+        complement_seq = ""
+        if self.sequence == "NULL":
+            return 'NULL'
+        if self.sequence == "ERROR!!":
+            return 'ERROR'
+        for base in self.sequence:
+            complement_seq += complement_dict.get(base, base)
+        return complement_seq
 
     def read_fasta(self, filename):
-        with open(filename, 'r') as file:
-            lines = file.readlines()
-            self.sequence = "".join(lines[1:])
-        return self.sequence
-    def count_percent(self):
-        total_len = self.len()
-        if total_len == 0:
-            return {'A': 0, 'T': 0, 'C': 0, 'G': 0}
-        else:
-            return {base: (self.count_base(base) / total_len) * 100 for base in 'ACTG'}
-
-    def frequent_base(self):
-        counts = self.count()
-        return max(counts, key=counts.get)
+        from pathlib import Path
+        file_contents = Path(filename).read_text()
+        first_line = file_contents.find("\n")
+        seq_dna = file_contents[first_line:]
+        seq = seq_dna.replace("\n", "")
+        self.sequence = seq
+        return seq

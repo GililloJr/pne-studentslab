@@ -1,24 +1,13 @@
 from Seq1 import Seq
+s1 = Seq("")
+s2 = Seq("ACTGA")
+s3 = Seq("Invalid sequence")
 
-sequences = [None, "ACTGA", ""]
-
+sequences = [s1, s2, s3]
 for i, seq in enumerate(sequences):
-    if seq is None:
-        print("NULL sequence created")
-        seq_instance = Seq("")
-    elif seq == "ERROR":
-        print("INVALID sequence!")
-        seq_instance = Seq(seq)
-    else:
-        print("New sequence created!")
-        seq_instance = Seq(seq)
-
-    print(
-        f"Sequence {i}: (Length: {len(seq_instance.sequence)}) {'NULL' or 'ERROR' if not seq_instance.sequence else seq_instance.sequence}")
-    counts = {base: seq_instance.count_base(base) for base in 'ACTG'}
-    print("  " + ", ".join([f"{base}: {counts[base]}" for base in 'ACTG']))
-
-
+    print(f"Sequence {i}: (Length: {seq.len()}) {seq}")
+    counts = [f"{base}: {seq.count_base(base)}" for base in ['A', 'C', 'T', 'G']]
+    print("  " + ", ".join(counts))
 
 
 
