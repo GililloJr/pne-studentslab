@@ -63,11 +63,7 @@ def list_species(endpoint, parameters):
         species_name = []
         for specie in species[:limit]:
             species_name.append(specie['display_name'])
-        context = {
-            'num_species': len(species),
-            'limit': limit,
-            'species_name': species_name
-        }
+        context = {'num_species': len(species), 'limit': limit, 'species_name': species_name}
         contents = read_html_template("species.html").render(context=context)
         code = HTTPStatus.OK
     else:
