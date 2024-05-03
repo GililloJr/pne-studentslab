@@ -55,21 +55,16 @@ def list_species(endpoint, parameters):
     request = RESOURCE_TO_ENSEMBL_REQUEST[endpoint]
     url = f"{request['resource']}?{request['params']}"
     error, data = server_request(EMSEMBL_SERVER, url)
-    if not error:
-        limit = None
-        if 'limit' in parameters:
-            limit = int(parameters['limit'][0])
-        species = data['species']  # list<dict>
-        species_name = []
-        for specie in species[:limit]:
-            species_name.append(specie['display_name'])
-        context = {'num_species': len(species), 'limit': limit, 'species_name': species_name}
-        contents = read_html_template("species.html").render(context=context)
-        code = HTTPStatus.OK
-    else:
-        contents = handle_error(endpoint, ENSEMBL_COMMUNICATION_ERROR)
-        code = HTTPStatus.SERVICE_UNAVAILABLE  # Comment
-    return code, contents
+    if error:
+        return HTTPStatus.SERVICE_UNAVAILABLE, handle_error(endpoint, ENSEMBL_COMMUNICATION_ERROR)
+
+    limit = int(parameters.get('limit', [None])[0])
+    species = data['species'][:limit]  # list<dict>
+    species_name = [specie['display_name'] for specie in species]
+    context = {'num_species': len(species), 'limit': limit, 'species_name': species_name}
+    contents = read_html_template("species.html").render(context=context)
+
+    return HTTPStatus.OK, contents
 
 
 socketserver.TCPServer.allow_reuse_address = True
