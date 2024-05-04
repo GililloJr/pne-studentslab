@@ -26,30 +26,29 @@ def info_response(seq):
         info += f"{base}: {count} ({percentage:.2f}%)\n"
     return info
 
-gene_code = input("Enter a gene name: ")
-if gene_code in genes:
-    SERVER = 'rest.ensembl.org'
+SERVER = 'rest.ensembl.org'
+PARAMS = '?content-type=application/json'
+
+conn = http.client.HTTPConnection(SERVER)
+
+for gene_code in genes:
     ENDPOINT = f'/sequence/id/{genes[gene_code]}'
-    PARAMS = '?content-type=application/json'
     URL = SERVER + ENDPOINT + PARAMS
 
     print()
-    print(f"Server: {SERVER}")
+    print(f"Gene: {gene_code}")
     print(f"URL: {URL}")
-
-    conn = http.client.HTTPConnection(SERVER)
 
     try:
         conn.request("GET", ENDPOINT + PARAMS)
     except ConnectionError:
         print("ERROR! Cannot connect to the server")
-        exit()
+        continue
 
     r1 = conn.getresponse()
     print(f"Response received!: {r1.status} {r1.reason}\n")
     data = r1.read().decode("utf-8")
     response = json.loads(data)
-    print(f"Gene: {gene_code}")
     print(f"Description: {response['desc']}")
     seq = response['seq']
     sequence = Seq(seq)
@@ -57,11 +56,3 @@ if gene_code in genes:
     count_base = sequence.count()
     most_frequent = max(count_base, key=count_base.get)
     print(f"Most frequent base is: {most_frequent}")
-else:
-    print("No valid gene.")
-
-
-
-
-
-

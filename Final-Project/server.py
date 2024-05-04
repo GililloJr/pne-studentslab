@@ -11,7 +11,7 @@ import json
 
 PORT = 8080
 HTML_FOLDER = "html"
-EMSEMBL_SERVER = "rest.ensembl.org"
+SERVER = "rest.ensembl.org"
 RESOURCE_TO_ENSEMBL_REQUEST = {
     '/listSpecies': {'resource': "/info/species", 'params': "content-type=application/json"}
 }
