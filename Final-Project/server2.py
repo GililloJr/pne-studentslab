@@ -48,7 +48,6 @@ def do_GET(self):
     termcolor.cprint(self.requestline, 'green')
 
     if path == "/":
-        file_path = os.path.join(HTML_FOLDER, "index.html")
+        filename = "index.html"
         contents = read_html_file(filename).render(context={})
     elif path == "/listSpecies":
-        code, contents = list_species(endpoint, parameters)
