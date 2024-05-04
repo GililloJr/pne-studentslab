@@ -7,36 +7,32 @@ from urllib.parse import parse_qs, urlparse
 import jinja2 as j
 import json
 
-
 PORT = 8080
-HTML_FOLDER = "html"
-SERVER = "rest.ensembl.org"
-ENDPOINT = '/listSpecies'
-RESOURCE = "/info/species", "/info/assembly_info"
-PARAMS = {'params': "content-type=application/json"}
-
-print(f"\nConnecting to server: {SERVER}:{PORT}\n")
-
-# Connect with the server
-conn = http.client.HTTPConnection(SERVER, PORT)
-
-# -- Send the request message, using the GET method. We are
-# -- requesting the main page (/)
-try:
-    conn.request("GET", ENDPOINT + PARAMS)
-except ConnectionRefusedError:
-    print("ERROR! Cannot connect to the Server")
-    exit()
-
-# -- This is for preventing the error: "Port already in use"
-socketserver.TCPServer.allow_reuse_address = True
 def read_html_file(filename):
     contents = Path("html/" + filename).read_text()
     contents = j.Template(contents)
     return contents
+def list_species(limit=None):
+    person = request.get("http://rest.ensembl.org/info/species", context={"Content-Type": "application/json"})
+    if person.ok:
+        datas = person.json()
+        specie = [specie['display_name'] for specie in datas['species']]
+        num_of_species = len(specie)
+        if limit:
+            specie = specie[:limit]
+        return num_of_species, specie
+    else:
+        print("Error!")
+
+def info_of_karyotype(specie):
+    person = requests.get(f"https://rest.ensembl.org/info/assembly/{specie}", context={"Content-Type": "application/json"})
+    if person.ok:
+        datas = person.json
+        return datas['karyotype']
+    else:
+        print("Error")
 
 class TestHandler(http.server.BaseHTTPRequestHandler):
-
 def do_GET(self):
     """This method is called whenever the client invokes the GET method
     in the HTTP protocol request"""
@@ -51,3 +47,9 @@ def do_GET(self):
         filename = "index.html"
         contents = read_html_file(filename).render(context={})
     elif path == "/listSpecies":
+        filename = "species.html"
+        if 'limit' in arguments:
+            limit = arguments['limit'][-1]
+            num_of_species, specie = list_species(limit)
+        else:
+            limit = None
