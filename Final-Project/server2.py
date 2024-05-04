@@ -37,3 +37,15 @@ def read_html_file(filename):
     contents = Path("html/" + filename).read_text()
     contents = j.Template(contents)
     return contents
+
+class TestHandler(http.server.BaseHTTPRequestHandler):
+
+    def do_GET(self):
+        """This method is called whenever the client invokes the GET method
+        in the HTTP protocol request"""
+        url_path = urlparse(self.path)
+        path = url_path.path  # we get it from here
+        arguments = parse_qs(url_path.query)
+        print(path, arguments)
+        # Print the request line
+        termcolor.cprint(self.requestline, 'green')
