@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CHROMOSOME LENGTH</title>
+</head>
+<body style="background-color: lightblue">
+<p>The length of the chromosome is: {{chromo_length}}</p>
+<ul>
+    {% for chromo in chromosomes %}
+    <li>{{chromo.name}}: {{chromo_length}}</li>
+    {% endfor %}
+</ul>
+</body>
+</html>

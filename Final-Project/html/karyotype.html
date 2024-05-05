@@ -5,9 +5,9 @@
     <title>KARYOTYPE</title>
 </head>
 <body style="background-color: lightblue">
-<h1>Karyotype of {{context.species}} specie</h1>
-<p>The name of the chromosomes are:</p>
-{% for chromosome in context.karyotype %}
+<h1>Karyotype of {{species}} species</h1>
+<p>The names of the chromosomes are:</p>
+{% for chromosome in karyotype %}
 <p>{{chromosome}}</p>
 {% endfor %}
 </body>
