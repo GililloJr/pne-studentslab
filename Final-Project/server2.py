@@ -29,12 +29,15 @@ def get_species_data(limit=None):
     return len(species_list), species_list
 
 def get_karyotype(species):
-    person = requests.get(f"https://rest.ensembl.org/info/assembly/{species}", headers={"Content-Type": "application/json"})
-    if person.ok:
-        data = person.json()
-        return data['karyotype']
-    else:
-        print("ERROR!")
+    url = f"https://rest.ensembl.org/info/assembly/{species}"
+    headers= {"Content-Type": "application/json"}
+    response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        print("Error!")
+        return
+    data = response.json()
+    return data['karyotype']
+
 
 def get_chromosome_length(species, chromo):
     response = requests.get(f"https://rest.ensembl.org/info/assembly/{species}",  headers={"Content-Type": "application/json"})
