@@ -46,7 +46,7 @@ def get_chromosome_length(species, chromo):
         print(data)
         chromo_length = []
         for chromosome in data['top_level_region']:
-            if chromosome['name'] == chromo:
+            if chromo == chromosome["name"] and chromosome["coord_system"] == "chromosome":
                 chromo_length.append(chromosome['length'])
         if chromo_length:
             return chromo_length[0]
@@ -76,8 +76,8 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             karyotype = get_karyotype(species)
             contents = read_html_file("karyotype.html").render(karyotype=karyotype)
         elif path == "/chromosomeLength":
-            species = arguments['species'][0] if 'species' in arguments else None
-            chromo = arguments['chromosome'][0] if 'chromo' in arguments else None
+            species = arguments['species'][0]
+            chromo = arguments['chromosome'][0]
             chromo_length = get_chromosome_length(species, chromo)
             contents = read_html_file("chromolength.html").render(species=species, chromo=chromo, chromo_length=chromo_length)
         else:
