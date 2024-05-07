@@ -40,21 +40,21 @@ def get_karyotype(species):
 
 
 def get_chromosome_length(species, chromo):
-    response = requests.get(f"https://rest.ensembl.org/info/assembly/{species}",  headers={"Content-Type": "application/json"})
-    if response.ok:
-        data = response.json()
-        print(data)
-        chromo_length = []
-        for chromosome in data['top_level_region']:
-            if chromo == chromosome["name"] and chromosome["coord_system"] == "chromosome":
-                chromo_length.append(chromosome['length'])
+    url = f"https://rest.ensembl.org/info/assembly/{species}"
+    headers= {"Content-Type": "application/json"}
+    response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        print("Error!")
+        return
+    data = response.json()
+    chromo_length = []
+    for chromosome in data['top_level_region']:
+        if chromo == chromosome["name"] and chromosome["coord_system"] == "chromosome":
+            chromo_length.append(chromosome['length'])
         if chromo_length:
             return chromo_length[0]
-        else:
-            return None
 
-    else:
-        print("ERROR!")
+
 
 
 class TestHandler(http.server.BaseHTTPRequestHandler):
