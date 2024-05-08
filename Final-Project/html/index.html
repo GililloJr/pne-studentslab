@@ -7,7 +7,6 @@
 <body style="background-color: lightyellow;">
   <h1>Browsing human and vertebrates genome</h1>
   <h2>BASIC Level services</h2>
-  <hr>
     <form action="/listSpecies" method="get">
   <p>1) List of species in the genome database</p>
     Limit:
@@ -31,11 +30,34 @@
   <br>
   <br>
       Select a chromosome:
-    <input type="text" name="chromosome"/>
+    <input type="text" name="chromo"/>
 <input type="submit" value="SEND"/>
   </form>
+<hr>
+    <h2>MEDIUM Level services</h2>
   <form action="/geneSeq" method="get">
-  <p>Enter a human gene to see the sequence:</p>
+  <p>4) Enter a human gene to see the sequence:</p>
+    Select the species:
+    <input type="text" name="species"/>
+<input type="submit" value="SEND"/>
+    </form>
+  <hr>
+    <form action="/geneSeq" method="get">
+  <p>5) Enter a human gene to see its info:</p>
+    Select the species:
+    <input type="text" name="species"/>
+<input type="submit" value="SEND"/>
+    </form>
+  <hr>
+      <form action="/geneSeq" method="get">
+  <p>6) Enter a human gene to see its length and percentages:</p>
+    Select the species:
+    <input type="text" name="species"/>
+<input type="submit" value="SEND"/>
+    </form>
+  <hr>
+      <form action="/geneSeq" method="get">
+  <p>7) Enter a human gene to see the whole genetic code:</p>
     Select the species:
     <input type="text" name="species"/>
 <input type="submit" value="SEND"/>

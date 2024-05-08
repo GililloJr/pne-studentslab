@@ -23,10 +23,9 @@ def get_species_data(limit=None):
         return
     data = response.json()
     species_list_1= [species['display_name'] for species in data['species']]
-
+    species_list_2 = species_list_1[:int(limit)]
     if limit is not None:
-        species_list_2 = species_list_1[:int(limit)]
-    return len(species_list_1), species_list_2
+        return len(species_list_1), species_list_2
 
 def get_karyotype(species):
     url = f"https://rest.ensembl.org/info/assembly/{species}"
@@ -77,7 +76,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             contents = read_html_file("karyotype.html").render(karyotype=karyotype)
         elif path == "/chromosomeLength":
             species = arguments['species'][0]
-            chromo = arguments['chromosome'][0]
+            chromo = arguments['chromo'][0]
             chromo_length = get_chromosome_length(species, chromo)
             contents = read_html_file("chromolength.html").render(species=species, chromo=chromo, chromo_length=chromo_length)
         else:
