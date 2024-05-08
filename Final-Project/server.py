@@ -22,11 +22,11 @@ def get_species_data(limit=None):
         print("Error!")
         return
     data = response.json()
-    species_list = [species['display_name'] for species in data['species']]
+    species_list_1= [species['display_name'] for species in data['species']]
 
     if limit is not None:
-        species_list = species_list[:int(limit)]
-    return len(species_list), species_list
+        species_list_2 = species_list_1[:int(limit)]
+    return len(species_list_1), species_list_2
 
 def get_karyotype(species):
     url = f"https://rest.ensembl.org/info/assembly/{species}"
