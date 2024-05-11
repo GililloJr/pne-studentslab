@@ -50,9 +50,12 @@ def get_species_data(limit=None):
         return
     data = response.json()
     species_list_1 = [species['display_name'] for species in data['species']]
-    species_list_2 = species_list_1[:int(limit)]
     if limit is not None:
+        species_list_2 = species_list_1[:int(limit)]
         return len(species_list_1), species_list_2
+    else:
+        return len(species_list_1)
+
 
 def get_karyotype(species):
     url = f"https://rest.ensembl.org/info/assembly/{species}"
