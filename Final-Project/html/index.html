@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>Welcome!!!</title>
 </head>
-<body style="background-color: lightyellow;">
+<body style="background-color: lightblue;">
   <h1>Browsing human and vertebrates genome</h1>
   <h2>BASIC Level services</h2>
     <form action="/listSpecies" method="get">
@@ -14,7 +14,6 @@
 <input type="submit" value="SEND"/>
     </form>
     <br>
-  <hr>
     <form action="/karyotype" method="get">
   <p>2) Information about the karyotype:</p>
     Select the species:
@@ -22,7 +21,6 @@
 <input type="submit" value="SEND"/>
     </form>
     <br>
-  <hr>
   <form action="/chromosomeLength" method="get">
   <p>3) Chromosome length</p>
     Select the species:
@@ -33,6 +31,7 @@
     <input type="text" name="chromo"/>
 <input type="submit" value="SEND"/>
   </form>
+  <br>
 <hr>
     <h2>MEDIUM Level services</h2>
   <p>4) Enter a human gene to see the sequence:</p>
@@ -40,19 +39,19 @@
   Gene:  <input type="text" name="gene"/>
     <input type="submit" value="SEND"/>
     </form>
-  <hr>
+<br>
     <p>5) Enter a human gene to see its info:</p>
     <form action="geneInfo" method="get">
     Gene: <input type="text" name="gene"/>
     <input type="submit" value="SEND"/>
     </form>
-  <hr>
+  <br>
     <p>6) Enter a human gene to see its length and percentages:</p>
     <form action="/geneCalc" method="get">
     Gene: <input type="text" name="gene"/>
 <input type="submit" value="SEND"/>
     </form>
-  <hr>
+  <br>
       <form action="/geneSeq" method="get">
   <p>7) Enter a human gene to see the whole genetic code:</p>
     Select the species:
