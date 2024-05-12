@@ -35,11 +35,10 @@
   </form>
 <hr>
     <h2>MEDIUM Level services</h2>
-  <form action="/geneSeq" method="get">
   <p>4) Enter a human gene to see the sequence:</p>
-    Select the species:
-    <input type="text" name="gene"/>
-<input type="submit" value="SEND"/>
+  <form action="/geneSeq" method="get">
+  Gene:  <input type="text" name="gene"/>
+    <input type="submit" value="SEND"/>
     </form>
   <hr>
     <p>5) Enter a human gene to see its info:</p>
@@ -48,10 +47,9 @@
     <input type="submit" value="SEND"/>
     </form>
   <hr>
-      <form action="/geneSeq" method="get">
-  <p>6) Enter a human gene to see its length and percentages:</p>
-    Select the species:
-    <input type="text" name="species"/>
+    <p>6) Enter a human gene to see its length and percentages:</p>
+    <form action="/geneCalc" method="get">
+    Gene: <input type="text" name="gene"/>
 <input type="submit" value="SEND"/>
     </form>
   <hr>

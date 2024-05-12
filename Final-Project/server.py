@@ -7,6 +7,7 @@ import requests
 import json
 from pathlib import Path
 import http.client
+from Seq1 import Seq
 
 PORT = 8080
 socketserver.TCPServer.allow_reuse_address = True
@@ -30,11 +31,21 @@ def fetch_json(file):  # renamed function
         exit()
 
     r1 = conn.getresponse()
-
     print(f"Response received!: {r1.status} {r1.reason}\n")
     data = r1.read().decode("utf-8")
-    get_json = json.loads(data)  # this should now refer to the json module
+    get_json = json.loads(data)
     return get_json
+
+def info_response(seq):
+    info = f"Total length: {seq.len()}<br>"
+    for base in ["A", "C", "G", "T"]:
+        count = seq.count_base(base)
+        if seq.len() > 0:
+            percentage = count / seq.len() * 100
+        else:
+            percentage = 0
+        info += f"{base}: {count} ({percentage}  %)<br>"
+    return info
 
 def get_species_data(limit=None):
     url = "http://rest.ensembl.org/info/species"
@@ -106,28 +117,35 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             contents = read_html_file("chromolength.html").render(species=species, chromo=chromo, chromo_length=chromo_length)
 
         elif path == "/geneSeq":
-            url = "https://rest.ensembl.org/lookup/symbol/homo_sapiens/" + arguments["gene"][0]
-            headers = {"Content-Type": "application/json"}
-            response = requests.get(url, headers=headers)
-            if response.status_code == 200:
-                gene_id = response.json().get('id')
-                seq_url = f"https://rest.ensembl.org/sequence/id/{gene_id}"
-                seq_response = requests.get(seq_url, headers=headers)
-                if seq_response.status_code == 200:
-                    gene_sequence = seq_response.json().get('seq')
-                    contents = read_html_file("geneSeq.html").render(gene=arguments["gene"][0], gene_sequence=gene_sequence)
-        elif path == "/geneInfo":
             try:
                 response = fetch_json("/lookup/symbol/homo_sapiens/" + arguments["gene"][0])
                 get_id = response.get('id')
                 seq = fetch_json("/sequence/id/" + get_id)
                 geneinfo = ""
-                geneinfo += f"Length: {len(seq['seq'])}" + "<br>"
+                geneinfo += (seq['seq']) + "<br>"
+                contents = read_html_file("geneseq.html").render(context={"gene": arguments["gene"][0], "geneinfo": geneinfo})
+            except KeyError:
+                contents = Path('html/error.html').read_text()
+        elif path == "/geneInfo":
+            try:
+                response = fetch_json("/lookup/symbol/homo_sapiens/" + arguments["gene"][0])
+                get_id = response.get('id')
+                seq = fetch_json("/sequence/id/" + get_id)
+                geneinfo = f"Length: {len(seq['seq'])}" + "<br>"
                 geneinfo += f"Start: {response['start']}" + "<br>"
                 geneinfo += f"End: {response['end']}" + "<br>"
                 geneinfo += f"id: {response['id']}" + "<br>"
                 geneinfo += f"Chromosome: {response['seq_region_name']}" + "<br>"
                 contents = read_html_file("geneinfo.html").render(context={"gene": arguments["gene"][0], "geneinfo": geneinfo})
+            except KeyError:
+                contents = Path('html/error.html').read_text()
+        elif path == "/geneCalc":
+            try:
+                response = fetch_json("/lookup/symbol/homo_sapiens/" + arguments["gene"][0])
+                get_id = response.get('id')
+                seq_response = fetch_json("/sequence/id/" + get_id)
+                seq = Seq(seq_response["seq"])
+                contents = read_html_file("genecalc.html").render(context={"gene": arguments["gene"][0], "calculations": info_response(seq)})
             except KeyError:
                 contents = Path('html/error.html').read_text()
         else:
