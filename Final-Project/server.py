@@ -89,8 +89,6 @@ def get_chromosome_length(species, chromo):
             return chromo_length[0]
 
 
-
-
 class TestHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         url_path = urlparse(self.path)
