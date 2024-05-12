@@ -38,15 +38,14 @@
   <form action="/geneSeq" method="get">
   <p>4) Enter a human gene to see the sequence:</p>
     Select the species:
-    <input type="text" name="species"/>
+    <input type="text" name="gene"/>
 <input type="submit" value="SEND"/>
     </form>
   <hr>
-    <form action="/geneSeq" method="get">
-  <p>5) Enter a human gene to see its info:</p>
-    Select the species:
-    <input type="text" name="species"/>
-<input type="submit" value="SEND"/>
+    <p>5) Enter a human gene to see its info:</p>
+    <form action="geneInfo" method="get">
+    Gene: <input type="text" name="gene"/>
+    <input type="submit" value="SEND"/>
     </form>
   <hr>
       <form action="/geneSeq" method="get">

@@ -4,7 +4,9 @@ import termcolor
 from urllib.parse import parse_qs, urlparse
 import jinja2 as j
 import requests
+import json
 from pathlib import Path
+import http.client
 
 PORT = 8080
 socketserver.TCPServer.allow_reuse_address = True
@@ -14,32 +16,25 @@ def read_html_file(filename):
     contents = j.Template(contents)
     return contents
 
-def json(file):
+def fetch_json(file):  # renamed function
     SERVER = 'rest.ensembl.org'
     ENDPOINT = file
-    PARAMS = {"Content-Type": "application/json"}
+    PARAMS = "?content-type=application/json"
 
-    conn = http.client.HTTPConnection(SERVER, PORT)
+    conn = http.client.HTTPConnection(SERVER)
 
-    # -- Send the request message, using the GET method. We are
-    # -- requesting the main page (/)
     try:
         conn.request("GET", ENDPOINT + PARAMS)
     except ConnectionRefusedError:
         print("ERROR! Cannot connect to the Server")
         exit()
 
-    # -- Read the response message from the server
     r1 = conn.getresponse()
 
-    # -- Print the status line
     print(f"Response received!: {r1.status} {r1.reason}\n")
-
-    # -- Read the response's body
     data = r1.read().decode("utf-8")
-
-    # Parse the JSON response
-    person = json.loads(data)
+    get_json = json.loads(data)  # this should now refer to the json module
+    return get_json
 
 def get_species_data(limit=None):
     url = "http://rest.ensembl.org/info/species"
@@ -123,16 +118,16 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                     contents = read_html_file("geneSeq.html").render(gene=arguments["gene"][0], gene_sequence=gene_sequence)
         elif path == "/geneInfo":
             try:
-                response = json("/lookup/symbol/homo_sapiens/" + arguments['gene'][0])
+                response = fetch_json("/lookup/symbol/homo_sapiens/" + arguments["gene"][0])
                 get_id = response.get('id')
-                seq = json("/sequence/id/" + get_id)
+                seq = fetch_json("/sequence/id/" + get_id)
                 geneinfo = ""
                 geneinfo += f"Length: {len(seq['seq'])}" + "<br>"
                 geneinfo += f"Start: {response['start']}" + "<br>"
                 geneinfo += f"End: {response['end']}" + "<br>"
                 geneinfo += f"id: {response['id']}" + "<br>"
                 geneinfo += f"Chromosome: {response['seq_region_name']}" + "<br>"
-                contents = read_html_file("chromolength.html").render(context={'gene': arguments['gene'][0], 'geneinfo': geneinfo})
+                contents = read_html_file("geneinfo.html").render(context={"gene": arguments["gene"][0], "geneinfo": geneinfo})
             except KeyError:
                 contents = Path('html/error.html').read_text()
         else:

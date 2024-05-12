@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Gene inforamtion</title>
+    <meta charset="UTF-8">
+    <title>GENE INFO</title>
 </head>
-<body>
-    <h1>Gene info: {{ context['gene'] }}</h1>
-    <p><strong>Length:</strong> {{ context['geneinfo']['seq'] }}<br></p>
-    <p><strong>Start:</strong> {{ context['geneinfo']['start'] }}<br></p>
-    <p><strong>End:</strong> {{ context['geneinfo']['end'] }}<br></p>
-    <p><strong>ID:</strong> {{ context['geneinfo']['id'] }}<br></p>
-    <p><strong>Chromosome:</strong> {{ context['geneinfo']['seq_region_name'] }}<br></p>
+<body style="background-color: lightgreen;">
+    <h2>{{context.gene}}</h2>
+    <p>{{context.geneinfo}}</p>
 </body>
 </html>
+
