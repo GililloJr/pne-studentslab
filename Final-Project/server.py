@@ -73,7 +73,6 @@ def get_karyotype(species):
     data = response.json()
     return data['karyotype']
 
-
 def get_chromosome_length(species, chromo):
     url = f"https://rest.ensembl.org/info/assembly/{species}"
     headers = {"Content-Type": "application/json"}
