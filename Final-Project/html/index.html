@@ -52,11 +52,11 @@
 <input type="submit" value="SEND"/>
     </form>
   <br>
-      <form action="/geneSeq" method="get">
-  <p>7) Enter a human gene to see the whole genetic code:</p>
-    Select the species:
-    <input type="text" name="gene"/>
-<input type="submit" value="SEND"/>
+    <p>7) Enter a human gene to see the whole genetic code:</p>
+    <form action="/geneList" method="get">
+        <input type="text" name="chromo"/>
+        <input type="text" name="end"/>
+        <input type="text" name="start">
     </form>
     <br>
     <br>
