@@ -100,19 +100,27 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         if path == "/":
             contents = read_html_file("index.html").render()
         elif path == "/listSpecies":
-            limit = arguments['limit'][-1] if 'limit' in arguments else None
-            num_species, species = get_species_data(limit)
-            contents = read_html_file("species.html").render(num_species=num_species, species=species, limit=limit)
+            try:
+                limit = arguments['limit'][-1] if 'limit' in arguments else None
+                num_species, species = get_species_data(limit)
+                contents = read_html_file("species.html").render(num_species=num_species, species=species, limit=limit)
+            except KeyError:
+                contents = read_html_file('html/error.html').read_text()
         elif path == "/karyotype":
-            species = arguments['species'][-1] if 'species' in arguments else None
-            karyotype = get_karyotype(species)
-            contents = read_html_file("karyotype.html").render(karyotype=karyotype)
+            try:
+                species = arguments['species'][-1] if 'species' in arguments else None
+                karyotype = get_karyotype(species)
+                contents = read_html_file("karyotype.html").render(karyotype=karyotype)
+            except KeyError:
+                contents = read_html_file('html/error.html').read_text()
         elif path == "/chromosomeLength":
-            species = arguments['species'][0]
-            chromo = arguments['chromo'][0]
-            chromo_length = get_chromosome_length(species, chromo)
-            contents = read_html_file("chromolength.html").render(species=species, chromo=chromo, chromo_length=chromo_length)
-
+            try:
+                species = arguments['species'][0]
+                chromo = arguments['chromo'][0]
+                chromo_length = get_chromosome_length(species, chromo)
+                contents = read_html_file("chromolength.html").render(species=species, chromo=chromo, chromo_length=chromo_length)
+            except KeyError:
+                contents = Path('html/error.html').read_text()
         elif path == "/geneSeq":
             try:
                 response = fetch_json("/lookup/symbol/homo_sapiens/" + arguments["gene"][0])
