@@ -163,7 +163,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(str.encode(contents))
 
 with socketserver.TCPServer(("", PORT), TestHandler) as httpd:
-    print("Serving at PORT", PORT)
+    print("Serving at PORT", PORT, "...")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
