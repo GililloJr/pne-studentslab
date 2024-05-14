@@ -167,5 +167,5 @@ with socketserver.TCPServer(("", PORT), TestHandler) as httpd:
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
-        print("Stopped by the user")
+        print("Stopped by gilillo")
         httpd.server_close()
