@@ -108,7 +108,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 contents = read_html_file('html/error.html').read_text()
         elif path == "/karyotype":
             try:
-                species = arguments['species'][-1] if 'species' in arguments else None
+                species = arguments['species'][-1]
                 karyotype = get_karyotype(species)
                 contents = read_html_file("karyotype.html").render(karyotype=karyotype)
             except KeyError:
