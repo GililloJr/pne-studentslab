@@ -50,24 +50,19 @@ def get_species_data(limit=None):
     url = "http://rest.ensembl.org/info/species"
     headers = {"Content-Type": "application/json"}
     response = requests.get(url, headers=headers)
-    if response.status_code != 200:
-        print("Error!")
-        return
     data = response.json()
+    print(data)
     species_list_1 = [species['display_name'] for species in data['species']]
     if limit is not None:
         species_list_2 = species_list_1[:int(limit)]
-        return len(species_list_1), species_list_2
     else:
-        return len(species_list_1)
+        species_list_2 = species_list_1
+    return len(species_list_1), species_list_2
 
 def get_karyotype(species):
     url = f"https://rest.ensembl.org/info/assembly/{species}"
     headers = {"Content-Type": "application/json"}
     response = requests.get(url, headers=headers)
-    if response.status_code != 200:
-        print("Error!")
-        return
     data = response.json()
     return data['karyotype']
 
@@ -75,9 +70,6 @@ def get_chromosome_length(species, chromo):
     url = f"https://rest.ensembl.org/info/assembly/{species}"
     headers = {"Content-Type": "application/json"}
     response = requests.get(url, headers=headers)
-    if response.status_code != 200:
-        print("Error!")
-        return
     data = response.json()
     chromo_length = []
     for chromosome in data['top_level_region']:
@@ -94,6 +86,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         arguments = parse_qs(url_path.query)
         print(path, arguments)
         termcolor.cprint(self.requestline, 'green')
+        contents = ''
 
         if path == "/":
             contents = read_html_file("index.html").render()
@@ -103,7 +96,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 num_species, species = get_species_data(limit)
                 contents = read_html_file("species.html").render(num_species=num_species, species=species, limit=limit)
             except KeyError:
-                contents = read_html_file('html/error.html').read_text()
+                contents = read_html_file('error.html').read_text()
         elif path == "/karyotype":
             try:
                 species = arguments['species'][0]
