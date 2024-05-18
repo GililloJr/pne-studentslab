@@ -9,26 +9,27 @@ from pathlib import Path
 import http.client
 from Seq1 import Seq
 
-# Constants
 PORT = 8080
 socketserver.TCPServer.allow_reuse_address = True
-SERVER = 'rest.ensembl.org'
 
-# Utility functions
 def read_html_file(filename):
     contents = Path("html/" + filename).read_text()
     contents = j.Template(contents)
     return contents
 
-def fetch_json(file):
+def fetch_json(file):  # renamed function
+    SERVER = 'rest.ensembl.org'
     ENDPOINT = file
     PARAMS = "?content-type=application/json"
+
     conn = http.client.HTTPConnection(SERVER)
+
     try:
         conn.request("GET", ENDPOINT + PARAMS)
     except ConnectionRefusedError:
         print("ERROR! Cannot connect to the Server")
         exit()
+
     r1 = conn.getresponse()
     print(f"Response received!: {r1.status} {r1.reason}\n")
     data = r1.read().decode("utf-8")
@@ -61,6 +62,7 @@ def get_species_data(limit=None):
     else:
         return len(species_list_1)
 
+
 def get_karyotype(species):
     url = f"https://rest.ensembl.org/info/assembly/{species}"
     headers = {"Content-Type": "application/json"}
@@ -86,7 +88,7 @@ def get_chromosome_length(species, chromo):
         if chromo_length:
             return chromo_length[0]
 
-# Server class
+
 class TestHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         url_path = urlparse(self.path)
@@ -105,12 +107,15 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             except KeyError:
                 contents = read_html_file('html/error.html').read_text()
         elif path == "/karyotype":
-            try:
-                species = arguments['species'][0]
-                karyotype = get_karyotype(species)
-                contents = read_html_file("karyotype.html").render(karyotype=karyotype)
-            except KeyError:
-                contents = read_html_file('html/error.html').read_text()
+            if 'species' in arguments:
+                try:
+                    species = arguments['species'][0]
+                    karyotype = get_karyotype(species)
+                    contents = read_html_file("karyotype.html").render(karyotype=karyotype)
+                except KeyError:
+                    contents = read_html_file('html/error.html').read_text()
+            else:
+                contents = read_html_file("error.html").read_text()
         elif path == "/chromosomeLength":
             try:
                 species = arguments['species'][0]
@@ -168,7 +173,6 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(str.encode(contents))
 
-# Main execution
 with socketserver.TCPServer(("", PORT), TestHandler) as httpd:
     print("Serving at PORT", PORT, "...")
     try:
