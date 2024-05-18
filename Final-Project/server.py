@@ -154,6 +154,8 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             for genes in info_of_gene:
                 list_of_genes.append(genes["external_name"])
             contents = read_html_file("geneList.html").render(context={"gene": list_of_genes, "start": start, "end": end})
+        else:
+            contents = Path('html/error.html').read_text()
 
         self.send_response(200)
         self.send_header('Content-Type', 'text/html')
