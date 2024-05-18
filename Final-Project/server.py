@@ -101,14 +101,14 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             contents = read_html_file("index.html").render()
         elif path == "/listSpecies":
             try:
-                limit = arguments['limit'][-1] if 'limit' in arguments else None
+                limit = arguments['limit'][0] if 'limit' in arguments else None
                 num_species, species = get_species_data(limit)
                 contents = read_html_file("species.html").render(num_species=num_species, species=species, limit=limit)
             except KeyError:
                 contents = read_html_file('html/error.html').read_text()
         elif path == "/karyotype":
             try:
-                species = arguments['species'][-1]
+                species = arguments['species'][0]
                 karyotype = get_karyotype(species)
                 contents = read_html_file("karyotype.html").render(karyotype=karyotype)
             except KeyError:
