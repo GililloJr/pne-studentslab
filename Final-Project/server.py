@@ -145,17 +145,21 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             except KeyError:
                 contents = Path('html/error.html').read_text()
         elif path == "/geneList":
-            list_of_genes = []
-            chromo = arguments["chromo"][0]
-            start = arguments["start"][0]
-            end = arguments["end"][0]
-            response = fetch_json("/overlap/region/human/" + chromo + ':' + start + '-' + end + '?feature=gene&')
-            info_of_gene = json.loads(response)
-            for genes in info_of_gene:
-                list_of_genes.append(genes["external_name"])
-            contents = read_html_file("geneList.html").render(context={"gene": list_of_genes, "start": start, "end": end})
-        else:
-            contents = Path('html/error.html').read_text()
+            try:
+                list_of_genes = ""
+                chromo = arguments.get("chromo")[0]
+                start = arguments.get("start")[0]
+                end = arguments.get("end")[0]
+                link = f"https://rest.ensembl.org/overlap/region/human/{chromo}:{start}-{end}?feature=gene;content-type=application/json"
+                response = requests.get(link)
+                data_json = response.json()
+                print(data_json)
+                for genes in data_json:
+                    list_of_genes += genes["external_name"]
+                contents = read_html_file("geneList.html").render(context={"gene_list": list_of_genes})
+            except KeyError:
+                contents = Path('html/error.html').read_text()
+
 
         self.send_response(200)
         self.send_header('Content-Type', 'text/html')
