@@ -159,6 +159,29 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 contents = read_html_file("geneList.html").render(context={"gene_list": list_of_genes})
             except KeyError:
                 contents = Path('html/error.html').read_text()
+        elif path == "/sequence":
+            try:
+                id = arguments["id"][0]
+                species = arguments['species'][0]
+                even_bases = 'even_bases' in arguments
+                endpoint = f"https://rest.ensembl.org/sequence/id/{id}"
+                headers = {"content-type": "application/json", "db_type": "otherfeatures", "type": "cds",
+                           "object-type": "transcript"}
+                url = f"{endpoint}?species={species}"
+                response = requests.get(url, headers=headers)
+                data = response.json()
+                bases = data["seq"]
+                length = len(bases)
+                if length % 2 == 0:
+                    is_even = 'the num of bases is even'
+                else:
+                    is_even = 'the num of bases is not even'
+                base_info = {"species": species, "length": length, "bases": bases, "id": id, "is_even": is_even,
+                             "even_bases": even_bases}
+                contents = read_html_file("sequences.html").render(context=base_info)
+            except KeyError:
+                contents = Path('html/error.html').read_text()
+
 
 
         self.send_response(200)
